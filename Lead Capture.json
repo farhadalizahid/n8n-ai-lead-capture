@@ -1,0 +1,281 @@
+{
+  "name": "Lead Capture",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1nrFo1IX9hQzwHo3NLirqrXhsCwK_M_7GeKHxd86gYTs",
+          "mode": "list",
+          "cachedResultName": "Untitled form (Responses)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nrFo1IX9hQzwHo3NLirqrXhsCwK_M_7GeKHxd86gYTs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1266986122,
+          "mode": "list",
+          "cachedResultName": "Form responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nrFo1IX9hQzwHo3NLirqrXhsCwK_M_7GeKHxd86gYTs/edit#gid=1266986122"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "dac1186b-81a9-4ceb-8fa9-2a2b28009820",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "Y0L6TQcOvkREScpe",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "models/gemini-3-flash-preview",
+          "cachedResultName": "Gemini 3 Flash Preview",
+          "cachedResultUrl": ""
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are a lead assistant for a business.\nLead name: {{ $json['Full Name'] }}\nNeed: {{ $json['What do you need?'] }}\n {{ $json['How soon do you need it? '] }}\n\nReply in exactly this format:\nLabel: Hot, Warm, or Cold\nSummary: one short sentence about this lead"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "340136d0-91fa-47dd-ac23-0afabecad224",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "I7UGgN1cwqPij2O9",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1nrFo1IX9hQzwHo3NLirqrXhsCwK_M_7GeKHxd86gYTs",
+          "mode": "list",
+          "cachedResultName": "Untitled form (Responses)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nrFo1IX9hQzwHo3NLirqrXhsCwK_M_7GeKHxd86gYTs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1266986122,
+          "mode": "list",
+          "cachedResultName": "Form responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nrFo1IX9hQzwHo3NLirqrXhsCwK_M_7GeKHxd86gYTs/edit#gid=1266986122"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email address": "={{ $('Google Sheets Trigger').item.json['Email address'] }}",
+            "AI Result": "={{ $json.content.parts[0].text }}"
+          },
+          "matchingColumns": [
+            "Email address"
+          ],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email address",
+              "displayName": "Email address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "What do you need?",
+              "displayName": "What do you need?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "How soon do you need it? ",
+              "displayName": "How soon do you need it? ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "AI Result",
+              "displayName": "AI Result",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        592,
+        0
+      ],
+      "id": "e4018835-489c-4c3b-a495-e439de391fb5",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hN5e0iS7sRTmXQp7",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Google Sheets Trigger').item.json['Email address'] }}",
+        "subject": "thank u for contacting",
+        "message": "=Hello {{ $('Google Sheets Trigger').item.json['Full Name'] }},  Thank you for reaching out. We received your request and our team will contact you soon.  Regards, Farhad",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        651,
+        0
+      ],
+      "id": "a4d69c25-3d6a-4fe8-8e0e-a88321263b10",
+      "name": "Send a message",
+      "webhookId": "45c2f12e-c5dd-4cce-a5b9-454569774bdc",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "g2tRvoeRK7hzldPv",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "181af582-0109-45a9-97db-85b81e491dc0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7d143eccd3350760f49234f19ee2580260f70cd18dcb762b2db777e6734c1f87"
+  },
+  "nodeGroups": [],
+  "id": "yNpCnbb9SEFRpYyr",
+  "tags": []
+}
